@@ -1,0 +1,44 @@
+[
+  {
+    "cpu": ${fargate_cpu},
+    "image": "${app_image}",
+    "memory": ${fargate_memory},
+    "name": "nginx-fluentbit",
+    "networkMode": "awsvpc",
+    "essential": true,
+    "portMappings": [
+      {
+        "containerPort": ${port},
+        "hostPort": ${port}
+      }
+    ],
+    "logConfiguration": {
+      "logDriver": "awsfirelens",
+      "options": {
+        "Name": "cloudwatch",
+        "region": "${aws_region}",
+        "auto_create_group": "true",
+        "log_group_name": "fluent-bit-cloudwatch-$(uuid)",
+        "log_stream_prefix": "from-fluent-bit-nginx"
+      }
+    }
+  },
+  {
+    "essential": true,
+    "image": "906394416424.dkr.ecr.us-east-1.amazonaws.com/aws-for-fluent-bit:stable",
+    "name": "fluentbit-log-router",
+    "firelensConfiguration": {
+      "type": "fluentbit"
+    },
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "firelens-container",
+        "awslogs-region": "{aws_region}",
+        "awslogs-create-group": "true",
+        "awslogs-stream-prefix": "firelens"
+      }
+    },
+    "memoryReservation": 50
+  }
+]
