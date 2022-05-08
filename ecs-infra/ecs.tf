@@ -39,6 +39,7 @@ resource "aws_ecs_task_definition" "nginx_fluent_bit" {
   })
 
   execution_role_arn = aws_iam_role.fluent_bit_task_role.arn
+  task_role_arn      = aws_iam_role.fluent_bit_task_role.arn
 }
 
 resource "aws_ecs_service" "fluent_bit_service" {
