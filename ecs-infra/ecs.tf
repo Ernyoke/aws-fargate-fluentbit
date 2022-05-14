@@ -80,8 +80,8 @@ resource "aws_iam_role" "fluent_bit_task_role" {
   })
 }
 
-resource "aws_iam_policy" "fluent_bit_task_policy" {
-  name        = "fluent_bit_task_policy"
+resource "aws_iam_policy" "fluent_bit_task_policy_general" {
+  name        = "fluent_bit_task_policy_general"
   path        = "/"
   description = "Task policy"
 
@@ -105,7 +105,31 @@ resource "aws_iam_policy" "fluent_bit_task_policy" {
   })
 }
 
-resource "aws_iam_role_policy_attachment" "fluent_bit_task_role_attachment" {
+resource "aws_iam_policy" "fluent_bit_task_policy_s3_write" {
+  name        = "fluent_bit_task_policy_allow_s3_write"
+  path        = "/"
+  description = "Task policy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "s3:PutObject"
+        ]
+        Effect   = "Allow"
+        Resource = ["arn:aws:s3:::${aws_s3_bucket.fluentbit_logging_bucket.bucket}/*"]
+      },
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "fluent_bit_task_role_general_attachment" {
   role       = aws_iam_role.fluent_bit_task_role.id
-  policy_arn = aws_iam_policy.fluent_bit_task_policy.arn
+  policy_arn = aws_iam_policy.fluent_bit_task_policy_general.arn
+}
+
+resource "aws_iam_role_policy_attachment" "fluent_bit_task_role_s3_write_attachment" {
+  role       = aws_iam_role.fluent_bit_task_role.id
+  policy_arn = aws_iam_policy.fluent_bit_task_policy_s3_write.arn
 }

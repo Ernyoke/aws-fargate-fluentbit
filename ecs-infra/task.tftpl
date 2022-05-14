@@ -1,7 +1,7 @@
 [
     {
     "essential": true,
-    "image": "906394416424.dkr.ecr.us-east-1.amazonaws.com/aws-for-fluent-bit:latest",
+    "image": "<id>.dkr.ecr.us-east-1.amazonaws.com/fluent-bit-s3:latest"
     "name": "fluentbit-log-router",
     "firelensConfiguration": {
       "type": "fluentbit"
@@ -31,15 +31,7 @@
       }
     ],
     "logConfiguration": {
-      "logDriver": "awsfirelens",
-      "options": {
-        "Name": "cloudwatch",
-        "region": "${aws_region}",
-        "auto_create_group": "true",
-        "log_group_name": "fluent-bit-cloudwatch",
-        "log_stream_prefix": "from-fluent-bit-nginx",
-        "sts_endpoint": "sts.amazonaws.com"
-      }
+      "logDriver": "awsfirelens"
     }
   }
 ]
