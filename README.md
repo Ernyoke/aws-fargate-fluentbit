@@ -1,6 +1,6 @@
 # aws-fargate-fluentbit
 
-This repository contains the code for the article:
+This repository contains the code for the article: [https://ervinszilagyi.dev/articles/ecs-custom-logging-with-fluentbit.html](https://ervinszilagyi.dev/articles/ecs-custom-logging-with-fluentbit.html)
 
 ## Running the Code
 
